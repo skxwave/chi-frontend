@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 
-const Logout = () => {
+const Logout: React.FC = () => {
     useEffect(() => {
         sessionStorage.removeItem('accessToken');
         sessionStorage.removeItem('refreshToken');

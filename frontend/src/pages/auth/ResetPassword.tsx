@@ -1,30 +1,32 @@
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 import axiosClient from '../../api/axiosClient';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Navbar from '../../components/Navbar';
 
-const ResetPassword = () => {
-    const [email, setEmail] = useState('');
-    const [message, setMessage] = useState('');
+const ResetPassword: React.FC = () => {
+    const [email, setEmail] = useState<string>('');
+    const [message, setMessage] = useState<string>('');
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         try {
             await axiosClient.post('/auth/reset-password/', { email });
             setMessage('Password reset link has been sent to your email.');
             navigate('/login');
-        } catch (error) {
-            if (error.response && error.response.data) {
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error) && error.response?.data) {
                 setMessage('An error occurred. Please check your email.');
             } else {
                 setMessage('Something went wrong.');
             }
-            setMessage('');
         }
     };
 
     return(
         <>
+            <Navbar />
             <div className="mx-auto max-w-lg p-6 bg-white shadow-lg rounded-2xl">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Reset Password</h2>
@@ -34,7 +36,7 @@ const ResetPassword = () => {
                     <form className="space-y-6" onSubmit={handleSubmit}>
 
                         <div>
-                            <label for="email" className="block text-sm/6 font-medium text-gray-900">Email address</label>
+                            <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">Email address</label>
                             <div className="mt-2">
                                 <input  
                                     type="email"

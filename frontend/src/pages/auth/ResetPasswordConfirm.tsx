@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import axiosClient from '../../api/axiosClient';
 import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import Navbar from '../../components/Navbar';
 
-const ResetPasswordConfirm = () => {
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
-    const [message, setMessage] = useState('');
+const ResetPasswordConfirm: React.FC = () => {
+    const [password, setPassword] = useState<string>('');
+    const [confirmPassword, setConfirmPassword] = useState<string>('');
+    const [message, setMessage] = useState<string>('');
     const navigate = useNavigate();
     const { search } = useLocation();
 
@@ -18,7 +20,7 @@ const ResetPasswordConfirm = () => {
         }
     }, [token]);
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
 
         try {
@@ -33,22 +35,22 @@ const ResetPasswordConfirm = () => {
 
             setMessage('Your password has been successfully reset.');
             navigate('/login');
-        } catch (error) {
-            if (error.response && error.response.data) {
+        } catch (error: unknown) {
+            if (axios.isAxiosError(error) && error.response?.data) {
                 const errorData = error.response.data;
                 const errorMessages = Object.entries(errorData)
-                    .map(([field, messages]) => `${field}: ${messages.join(', ')}`)
+                    .map(([field, messages]) => `${field}: ${(messages as string[]).join(', ')}`)
                     .join(' | ');
                 setMessage(`${errorMessages}`);
             } else {
                 setMessage('Something went wrong.');
             }
-            setMessage('');
         }
     };
 
     return(
         <>
+            <Navbar />
             <div className="mx-auto max-w-lg p-6 bg-white shadow-lg rounded-2xl">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Confirm New Password</h2>
@@ -58,7 +60,7 @@ const ResetPasswordConfirm = () => {
                     <form className="space-y-6" onSubmit={handleSubmit}>
 
                         <div>
-                            <label for="email" className="block text-sm/6 font-medium text-gray-900">New Password</label>
+                            <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">New Password</label>
                             <div className="mt-2">
                                 <input  
                                     type="password"
@@ -72,7 +74,7 @@ const ResetPasswordConfirm = () => {
                         </div>
 
                         <div>
-                            <label for="email" className="block text-sm/6 font-medium text-gray-900">Confirm password</label>
+                            <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">Confirm password</label>
                             <div className="mt-2">
                                 <input  
                                     type="password"

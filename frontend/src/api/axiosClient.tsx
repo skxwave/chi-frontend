@@ -1,5 +1,9 @@
-import axios from 'axios';
+import axios, { InternalAxiosRequestConfig, AxiosError } from 'axios';
 
+interface TokenResponse {
+    access: string;
+    refresh: string;
+}
 
 const axiosClient = axios.create({
     baseURL: 'http://localhost:8000',
@@ -9,8 +13,7 @@ const axiosClient = axios.create({
     },
 });
 
-
-axiosClient.interceptors.request.use((config) => {
+axiosClient.interceptors.request.use((config: InternalAxiosRequestConfig) => {
     const token = sessionStorage.getItem('accessToken');
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
@@ -20,18 +23,15 @@ axiosClient.interceptors.request.use((config) => {
 
 axiosClient.interceptors.response.use(
     (response) => response,
-    async (error) => {
-        const originalRequest = error.config;
+    async (error: AxiosError) => {
+        const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
-        if (
-            error.response &&
-            error.response.status === 401 &&
-            !originalRequest._retry
+        if (error.response?.status === 401 && !originalRequest._retry
         ) {
             originalRequest._retry = true;
             try {
                 const refreshToken = sessionStorage.getItem('refreshToken');
-                const response = await axios.post('http://localhost:8000/auth/token/refresh/', {
+                const response = await axios.post<TokenResponse>('http://localhost:8000/auth/token/refresh/', {
                     refresh: refreshToken,
                 });
                 const { access } = response.data;
