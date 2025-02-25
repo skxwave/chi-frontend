@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import axiosClient from '../../api/axiosClient';
-import { Link } from 'react-router-dom';
-import Navbar from '../../components/Navbar';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import { logout } from '../../redux/reducers/authSlice';
 
 interface ProfileData {
     age: string;
@@ -15,6 +17,13 @@ interface ProfileData {
 
 const Profile: React.FC = () => {
     const [profileData, setProfileData] = useState<ProfileData | null>(null);
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate("/login");
+    }
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -31,7 +40,6 @@ const Profile: React.FC = () => {
 
     return (
         <>
-            <Navbar />
             <div className="mx-auto max-w-lg p-6 bg-white shadow-lg rounded-2xl">
                 <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Profile</h1>
                 {profileData ? (
@@ -77,14 +85,11 @@ const Profile: React.FC = () => {
                             to="/profile/edit/"
                             className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
                             >
-                            Edit Profile
+                                Edit Profile
                             </Link>
-                            <Link
-                            to="/logout"
-                            className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition"
-                            >
-                            Logout
-                            </Link>
+                            <a onClick={handleLogout} className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">
+                                Logout
+                            </a>
                         </div>
                     </div>
                 ) : (

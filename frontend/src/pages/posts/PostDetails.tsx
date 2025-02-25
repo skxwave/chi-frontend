@@ -1,7 +1,6 @@
 import axiosClient from "../../api/axiosClient";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import Navbar from "../../components/Navbar";
 
 interface Product {
     id: number;
@@ -25,7 +24,6 @@ const PostDetails: React.FC = () => {
 
     return (
         <>
-            <Navbar />
             <div className="container mx-auto p-4">
                 <h1 className="text-3xl font-bold mb-4">{product.title}</h1>
                 <img src={product.image} alt={product.title} className="w-full h-64 object-cover rounded-md" />

@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import axiosClient from '../../api/axiosClient';
 import { useNavigate } from 'react-router-dom';
-import Navbar from "../../components/Navbar";
 
 interface FormData {
     age: string,
@@ -85,7 +84,6 @@ const ProfileEdit: React.FC = () => {
 
     return (
         <>
-            <Navbar />
             <div className="mx-auto max-w-lg p-6 bg-white shadow-lg rounded-2xl">
                 <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Edit Profile</h1>
 

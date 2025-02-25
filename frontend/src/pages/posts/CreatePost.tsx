@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from "react";
 import axiosClient from "../../api/axiosClient";
 import { useNavigate } from "react-router-dom";
-import Navbar from "../../components/Navbar";
 
 interface FormData {
     title: string;
@@ -53,7 +52,6 @@ const CreatePost: React.FC = () => {
 
     return (
         <>
-            <Navbar />
             <div className="container mx-auto p-4">
                 <h1 className="text-3xl font-bold text-center mb-6">Create Product</h1>
                 <form onSubmit={handleSubmit} className="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">

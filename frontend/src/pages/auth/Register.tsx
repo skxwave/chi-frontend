@@ -1,7 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react';
 import axiosClient from '../../api/axiosClient';
 import axios from 'axios';
-import Navbar from '../../components/Navbar';
 
 interface FormData {
     username: string,
@@ -53,7 +52,6 @@ const Register: React.FC = () => {
 
     return(
         <>
-            <Navbar />
             <div className="mx-auto max-w-lg p-6 bg-white shadow-lg rounded-2xl">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
                     <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">Register account</h2>
